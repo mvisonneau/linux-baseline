@@ -81,7 +81,8 @@ control 'package-07' do
   # Fedora doesn't install with a syslogger out of the box and instead uses
   # systemd journal; as there is there is no affinity towards either rsyslog
   # or syslog-ng, we'll skip this check on Fedora hosts.
-  only_if { os.name != 'fedora' && !container_execution }
+  #only_if { os.name != 'fedora' && !container_execution }
+  only_if { false } # Disabled as we use journald
   describe package(val_syslog_pkg) do
     it { should be_installed }
   end

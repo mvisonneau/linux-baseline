@@ -188,6 +188,7 @@ end
 
 control 'os-08' do
   impact 1.0
+  only_if { false } # Disabled as available entropy is very low on EC2
   title 'Entropy'
   desc 'Check system has enough entropy - greater than 1000'
   describe file('/proc/sys/kernel/random/entropy_avail').content.to_i do
@@ -243,7 +244,8 @@ control 'os-12' do
   impact 1.0
   title 'Detect vulnerabilities in the cpu-vulnerability-directory'
   desc 'Check for known cpu vulnerabilities described here: https://www.kernel.org/doc/html/v5.6/admin-guide/hw-vuln/index.html'
-  only_if { !container_execution }
+  # There is no remediation possible on Amazon based hardware + it does mostly apply to KVM based workloads
+  only_if { false }
 
   if file(cpuvulndir).exist?
     describe file(cpuvulndir) do

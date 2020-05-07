@@ -19,11 +19,7 @@
 
 sysctl_forwarding = attribute('sysctl_forwarding', value: false, description: 'Is network forwarding needed?')
 kernel_modules_disabled = attribute('kernel_modules_disabled', value: 0, description: 'Should loading of kernel modules be disabled?')
-container_execution = begin
-                        virtualization.role == 'guest' && virtualization.system =~ /^(lxc|docker)$/
-                      rescue NoMethodError
-                        false
-                      end
+container_execution = true
 
 control 'sysctl-01' do
   impact 1.0
@@ -210,7 +206,7 @@ control 'sysctl-17' do
   impact 1.0
   title 'Disable log martians'
   desc 'log_martians can cause a denial of service attack to the host'
-  only_if { !container_execution }
+  only_if { false }
   describe kernel_parameter('net.ipv4.conf.all.log_martians') do
     its(:value) { should eq 1 }
   end
